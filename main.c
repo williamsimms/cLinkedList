@@ -12,8 +12,8 @@ typedef struct Node *Node;
 
 void insertFirst(Node *head, int data);
 void insertLast(Node *head, int data);
-void insertAt(Node *head, int data);
-void printList(Node);
+void insertAt(Node *head, int data, int index);
+void printList(Node head);
 int length(Node head);
 Node getFirst(Node head);
 Node getLast(Node head);
@@ -36,7 +36,14 @@ void sort(Node head);
 int main(void) {
   Node head = NULL;
 
-  // insertFirst(&head,10)
+  printList(head);
+  insertFirst(&head, 10);
+  printList(head);
+  insertFirst(&head, 12);
+  insertFirst(&head, 11);
+  insertFirst(&head, 15);
+  printList(head);
+
   // insertLast(&head,15)
   // insertAt(&head,10,4)
 
@@ -214,6 +221,7 @@ void removeFirst(Node *head) {
 
   Node newHead = current->next;
   *head = newHead;
+  free(current);
 
   return;
 }
@@ -240,6 +248,8 @@ void removeLast(Node *head) {
     current = current->next;
     next = next->next;
   }
+
+  free(next);
 }
 
 void removeAt(Node *head, int index) {
@@ -250,9 +260,11 @@ void removeAt(Node *head, int index) {
     exit(EXIT_FAILURE);
   }
 
-  Node nodeAtIndex = getAt(*head, index - 1);
+  Node nodePreviousToIndex = getAt(*head, index - 1);
+  Node nodeBeingRemoved = nodePreviousToIndex->next;
+  nodePreviousToIndex->next = nodePreviousToIndex->next->next;
 
-  nodeAtIndex->next = nodeAtIndex->next->next;
+  free(nodeBeingRemoved);
 }
 
 int findIndex(Node head, int data) {
@@ -368,14 +380,19 @@ bool contains(Node head, int data) {
 }
 
 void printList(Node head) {
-  Node currentNode = head;
+  Node current = head;
 
-  while (currentNode->next != NULL) {
-    printf("%d ->", currentNode->data);
-    currentNode = currentNode->next;
+  if (current == NULL) {
+    puts("List is Empty.");
+    return;
   }
 
-  printf("NULL");
+  while (current != NULL) {
+    printf("%d -> ", current->data);
+    current = current->next;
+  }
+
+  printf("NULL\n");
 }
 
 Node findMidpoint(Node head) {
@@ -477,19 +494,26 @@ void reverse(Node *head) {
 
 void sort(Node head) {
   Node current = head;
+  Node next = NULL;
 
   if (current == NULL) {
     puts("List is Empty.");
     exit(EXIT_FAILURE);
   }
 
-  while (current->next != NULL) {
-    Node next = current->next;
+  while (current != NULL) {
+    next = current->next;
 
-    while (next->data < current->data) {
-      int temp = current->data;
-      current->data = next->data;
-      next->data = temp;
+    while (next != NULL) {
+      if (current->data > next->data) {
+        int temp = current->data;
+        current->data = next->data;
+        next->data = temp;
+      }
+
+      next = next->next;
     }
+
+    current = current->next;
   }
 }
