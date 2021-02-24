@@ -186,6 +186,39 @@ int main(void) {
 
   printList(head);
 
+  updateIndex(head, 55, 4);
+  printList(head);
+
+  updateOne(head, 11, 70);
+  printList(head);
+
+  int itemsUpdated = updateMany(head, 45, 44);
+  printList(head);
+  printf("Items updated -> %d .\n", itemsUpdated);
+
+  updateFirst(head, 1);
+  updateLast(head, 12);
+
+  printList(head);
+
+  reverse(&head);
+  printList(head);
+
+  sort(head);
+  printList(head);
+
+  updateIndex(head, 31, 5);
+  updateIndex(head, 22, 7);
+
+  printList(head);
+
+  sort(head);
+  printList(head);
+
+  clear(&head);
+
+  printList(head);
+
   return 0;
 }
 
@@ -617,52 +650,6 @@ void forEach(Node head, int (*function)(int)) {
   }
 }
 
-void reverse(Node *head) {
-  Node current = *head;
-  Node previous = NULL;
-  Node next = NULL;
-
-  if (current == NULL) {
-    puts("List is Empty.");
-    exit(EXIT_FAILURE);
-  }
-
-  while (current != NULL) {
-    next = current->next;
-    current->next = previous;
-    previous = current;
-    current = next;
-  }
-
-  *head = previous;
-}
-
-void sort(Node head) {
-  Node current = head;
-  Node next = NULL;
-
-  if (current == NULL) {
-    puts("List is Empty.");
-    exit(EXIT_FAILURE);
-  }
-
-  while (current != NULL) {
-    next = current->next;
-
-    while (next != NULL) {
-      if (current->data > next->data) {
-        int temp = current->data;
-        current->data = next->data;
-        next->data = temp;
-      }
-
-      next = next->next;
-    }
-
-    current = current->next;
-  }
-}
-
 bool updateIndex(Node head, int data, int index) {
   Node current = head;
 
@@ -751,6 +738,52 @@ bool updateLast(Node head, int data) {
   Node last = getLast(head);
   last->data = data;
   return true;
+}
+
+void reverse(Node *head) {
+  Node current = *head;
+  Node previous = NULL;
+  Node next = NULL;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    next = current->next;
+    current->next = previous;
+    previous = current;
+    current = next;
+  }
+
+  *head = previous;
+}
+
+void sort(Node head) {
+  Node current = head;
+  Node next = NULL;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    next = current->next;
+
+    while (next != NULL) {
+      if (current->data > next->data) {
+        int temp = current->data;
+        current->data = next->data;
+        next->data = temp;
+      }
+
+      next = next->next;
+    }
+
+    current = current->next;
+  }
 }
 
 void clear(Node *head) {
