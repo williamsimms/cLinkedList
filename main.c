@@ -68,8 +68,49 @@ int main(void) {
   Node nodeAtIndexFour = getAt(head, 4);
   printf("Node at Index of Four -> %d\n", nodeAtIndexFour->data);
 
+  Node lastNodeFallBack = getAt(head, 100);
+  printf(
+      "Node at Index of 100, List falls back and returns last element -> %d\n",
+      nodeAtIndexFour->data);
+
   insertAt(&head, 19, 4);
   printList(head);
+
+  insertAt(&head, 2, 0);
+  insertAt(&head, 22, 5);
+  printList(head);
+
+  removeFirst(&head);
+  printList(head);
+
+  removeFirst(&head);
+  removeFirst(&head);
+  printList(head);
+
+  insertAt(&head, 2, 0);
+  insertAt(&head, 22, 5);
+  printList(head);
+
+  removeLast(&head);
+  printList(head);
+
+  removeLast(&head);
+  printList(head);
+
+  removeAt(&head, 2);
+  printList(head);
+
+  int indexOf10 = findIndex(head, 10);
+  printf("Index of 10 -> %d \n", indexOf10);
+
+  int indexOf22 = findIndex(head, 22);
+  printf(
+      "Index of 22, falls back and returns index of first instance of 22  -> "
+      "%d \n",
+      indexOf22);
+
+  Node foundNodeWith19 = find(head, 19);
+  printf("Found Node Data -> %d \n", foundNodeWith19->data);
 
   return 0;
 }
@@ -150,6 +191,11 @@ void insertAt(Node *head, int data, int index) {
     newHeadNode->data = data;
     newHeadNode->next = NULL;
     *head = newHeadNode;
+    return;
+  }
+
+  if (index == 0) {
+    insertFirst(head, data);
     return;
   }
 
