@@ -37,15 +37,39 @@ int main(void) {
   Node head = NULL;
 
   printList(head);
+
   insertFirst(&head, 10);
-  printList(head);
-  insertFirst(&head, 12);
-  insertFirst(&head, 11);
-  insertFirst(&head, 15);
+
   printList(head);
 
-  // insertLast(&head,15)
-  // insertAt(&head,10,4)
+  insertFirst(&head, 12);
+  insertFirst(&head, 15);
+
+  printList(head);
+
+  insertLast(&head, 8);
+
+  printList(head);
+
+  insertLast(&head, 3);
+  insertLast(&head, 1);
+
+  printList(head);
+
+  Node first = getFirst(head);
+  printf("First Node -> %d\n", first->data);
+
+  Node last = getLast(head);
+  printf("Last Node -> %d\n", last->data);
+
+  Node nodeAtIndexTwo = getAt(head, 2);
+  printf("Node at Index of Two -> %d\n", nodeAtIndexTwo->data);
+
+  Node nodeAtIndexFour = getAt(head, 4);
+  printf("Node at Index of Four -> %d\n", nodeAtIndexFour->data);
+
+  insertAt(&head, 19, 4);
+  printList(head);
 
   return 0;
 }
@@ -129,7 +153,7 @@ void insertAt(Node *head, int data, int index) {
     return;
   }
 
-  Node nodeAtPreviousIndex = getAt(*head, index);
+  Node nodeAtPreviousIndex = getAt(*head, index - 1);
 
   Node newNodeToInsert;
   newNodeToInsert = malloc(sizeof(struct Node));
