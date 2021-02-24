@@ -30,6 +30,8 @@ void forEach(Node head, int (*function)(int));
 Node findMidpoint(Node head);
 Node stepBackFromTail(Node head, int amountToStepBack);
 bool isCircular(Node head);
+void reverse(Node *head);
+void sort(Node head);
 
 int main(void) {
   Node head = NULL;
@@ -45,6 +47,11 @@ void insertFirst(Node *head, int data) {
   if (*head == NULL) {
     Node newHeadNode;
     newHeadNode = malloc(sizeof(struct Node));
+
+    if (newHeadNode == NULL) {
+      exit(EXIT_FAILURE);
+    }
+
     newHeadNode->data = data;
     newHeadNode->next = NULL;
     *head = newHeadNode;
@@ -53,6 +60,11 @@ void insertFirst(Node *head, int data) {
 
   Node newHeadNode;
   newHeadNode = malloc(sizeof(struct Node));
+
+  if (newHeadNode == NULL) {
+    exit(EXIT_FAILURE);
+  }
+
   newHeadNode->data = data;
   newHeadNode->next = *head;
   *head = newHeadNode;
@@ -65,6 +77,11 @@ void insertLast(Node *head, int data) {
   if (current == NULL) {
     Node newHeadNode;
     newHeadNode = malloc(sizeof(struct Node));
+
+    if (newHeadNode == NULL) {
+      exit(EXIT_FAILURE);
+    }
+
     newHeadNode->data = data;
     newHeadNode->next = NULL;
     *head = newHeadNode;
@@ -77,6 +94,11 @@ void insertLast(Node *head, int data) {
 
   Node newLastNode;
   newLastNode = malloc(sizeof(struct Node));
+
+  if (newLastNode == NULL) {
+    exit(EXIT_FAILURE);
+  }
+
   newLastNode->data = data;
   newLastNode->next = NULL;
 
@@ -89,6 +111,11 @@ void insertAt(Node *head, int data, int index) {
   if (current == NULL) {
     Node newHeadNode;
     newHeadNode = malloc(sizeof(struct Node));
+
+    if (newHeadNode == NULL) {
+      exit(EXIT_FAILURE);
+    }
+
     newHeadNode->data = data;
     newHeadNode->next = NULL;
     *head = newHeadNode;
@@ -99,6 +126,11 @@ void insertAt(Node *head, int data, int index) {
 
   Node newNodeToInsert;
   newNodeToInsert = malloc(sizeof(struct Node));
+
+  if (newNodeToInsert == NULL) {
+    exit(EXIT_FAILURE);
+  }
+
   newNodeToInsert->data = data;
   newNodeToInsert->next = nodeAtPreviousIndex->next;
 
@@ -286,17 +318,17 @@ int count(Node head, int data) {
 }
 
 int length(Node head) {
-  Node currentNode = head;
+  Node current = head;
 
-  if (currentNode->next == NULL) {
+  if (current == NULL) {
     return 0;
   }
 
   int counter = 0;
 
-  while (currentNode->next != NULL) {
+  while (current != NULL) {
     counter++;
-    currentNode = currentNode->next;
+    current = current->next;
   }
 
   return counter;
@@ -348,17 +380,19 @@ void printList(Node head) {
 
 Node findMidpoint(Node head) {
   Node current = head;
+  Node next = head;
 
   if (current == NULL) {
     puts("List is Empty.");
     exit(EXIT_FAILURE);
   }
 
-  Node next = current->next;
-
-  while (current != NULL) {
+  while (next != NULL && next->next->next != NULL) {
     current = current->next;
+    next = next->next->next;
   }
+
+  return current;
 }
 
 Node stepBackFromTail(Node head, int amountToStepBack) {
@@ -378,7 +412,7 @@ Node stepBackFromTail(Node head, int amountToStepBack) {
     counter++;
   }
 
-  while (next != NULL) {
+  while (next->next != NULL) {
     current = current->next;
     next = next->next;
   }
@@ -388,15 +422,14 @@ Node stepBackFromTail(Node head, int amountToStepBack) {
 
 bool isCircular(Node head) {
   Node current = head;
+  Node next = head;
 
   if (current == NULL) {
     puts("List is Empty.");
     exit(EXIT_FAILURE);
   }
 
-  Node next = current->next;
-
-  while (current != NULL) {
+  while (next != NULL && next->next->next != NULL) {
     if (current == next) {
       return true;
     }
@@ -408,4 +441,55 @@ bool isCircular(Node head) {
   return false;
 }
 
-void forEach(Node head, int (*function)(int));
+void forEach(Node head, int (*function)(int)) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    current->data = function(current->data);
+    current = current->next;
+  }
+}
+
+void reverse(Node *head) {
+  Node current = *head;
+  Node previous = NULL;
+  Node next = NULL;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    next = current->next;
+    current->next = previous;
+    previous = current;
+    current = next;
+  }
+
+  *head = previous;
+}
+
+void sort(Node head) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current->next != NULL) {
+    Node next = current->next;
+
+    while (next->data < current->data) {
+      int temp = current->data;
+      current->data = next->data;
+      next->data = temp;
+    }
+  }
+}
