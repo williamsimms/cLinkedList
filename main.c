@@ -32,11 +32,16 @@ Node stepBackFromTail(Node head, int amountToStepBack);
 bool isCircular(Node head);
 void reverse(Node *head);
 void sort(Node head);
+bool updateIndex(Node head, int data, int index);
+bool updateOne(Node head, int data, int oldData);
+int updateMany(Node head, int data, int oldData);
 
 int main(void) {
   Node head = NULL;
 
-  printList(head);
+  bool isLinkedListEmpty = isEmpty(head);
+  printf("%s \n", isLinkedListEmpty == 1 ? "The Linked List is empty."
+                                         : "The Linked List is not Empty.");
 
   insertFirst(&head, 10);
 
@@ -112,13 +117,47 @@ int main(void) {
   Node foundNodeWith19 = find(head, 19);
   printf("Found Node Data -> %d \n", foundNodeWith19->data);
 
+  insertLast(&head, 22);
+  printList(head);
+
+  int amountOf22 = count(head, 22);
+  printf("The number 22 appears %d Times in the list. \n", amountOf22);
+
+  int lengthOfList = length(head);
+  printf("The Linked List is %d nodes long. \n", lengthOfList);
+
+  isLinkedListEmpty = isEmpty(head);
+  printf("%s \n", isLinkedListEmpty == 1 ? "The Linked List is empty."
+                                         : "The Linked List is not Empty.");
+
+  bool listContains10 = contains(head, 10);
+  printf("%s. \n", listContains10 == 1 ? "The Linked List contains 10"
+                                       : "The Linked List does not contain 10");
+
+  bool listContains35 = contains(head, 35);
+  printf("%s. \n", listContains35 == 1 ? "The Linked List contains 35"
+                                       : "The Linked List does not contain 35");
+
+  insertAt(&head, 35, 4);
+  printList(head);
+
+  listContains35 = contains(head, 35);
+  printf("%s. \n", listContains35 == 1 ? "The Linked List contains 35"
+                                       : "The Linked List does not contain 35");
+
+  insertAt(&head, 34, -20);
+  printList(head);
+
+  insertAt(&head, 24, 50);
+  printList(head);
+
   return 0;
 }
 
 void insertFirst(Node *head, int data) {
   if (*head == NULL) {
     Node newHeadNode;
-    newHeadNode = malloc(sizeof(struct Node));
+    newHeadNode = (Node)malloc(sizeof(struct Node));
 
     if (newHeadNode == NULL) {
       exit(EXIT_FAILURE);
@@ -131,7 +170,7 @@ void insertFirst(Node *head, int data) {
   }
 
   Node newHeadNode;
-  newHeadNode = malloc(sizeof(struct Node));
+  newHeadNode = (Node)malloc(sizeof(struct Node));
 
   if (newHeadNode == NULL) {
     exit(EXIT_FAILURE);
@@ -182,7 +221,7 @@ void insertAt(Node *head, int data, int index) {
 
   if (current == NULL) {
     Node newHeadNode;
-    newHeadNode = malloc(sizeof(struct Node));
+    newHeadNode = (Node)malloc(sizeof(struct Node));
 
     if (newHeadNode == NULL) {
       exit(EXIT_FAILURE);
@@ -194,15 +233,20 @@ void insertAt(Node *head, int data, int index) {
     return;
   }
 
-  if (index == 0) {
+  if (index <= 0) {
     insertFirst(head, data);
     return;
   }
 
   Node nodeAtPreviousIndex = getAt(*head, index - 1);
 
+  if (nodeAtPreviousIndex->next == NULL) {
+    insertLast(head, data);
+    return;
+  }
+
   Node newNodeToInsert;
-  newNodeToInsert = malloc(sizeof(struct Node));
+  newNodeToInsert = (Node)malloc(sizeof(struct Node));
 
   if (newNodeToInsert == NULL) {
     exit(EXIT_FAILURE);
@@ -265,7 +309,7 @@ Node getAt(Node head, int index) {
 
   int counter = 0;
 
-  while (current != NULL) {
+  while (current->next != NULL) {
     if (counter == index) {
       return current;
     }
@@ -436,17 +480,13 @@ bool contains(Node head, int data) {
 
   while (current != NULL) {
     if (current->data == data) {
-      break;
+      return true;
     }
 
     current = current->next;
   }
 
-  if (current->data == data) {
-    return true;
-  } else {
-    return false;
-  }
+  return false;
 }
 
 void printList(Node head) {
@@ -586,4 +626,69 @@ void sort(Node head) {
 
     current = current->next;
   }
+}
+
+bool updateIndex(Node head, int data, int index) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  int counter = 0;
+
+  while (current != NULL) {
+    if (counter == index) {
+      current->data = data;
+      return true;
+    }
+
+    current = current->next;
+    counter++;
+  }
+
+  return false;
+}
+
+bool updateOne(Node head, int data, int oldData) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    if (current->data == oldData) {
+      current->data = data;
+      return true;
+    }
+
+    current = current->next;
+  }
+
+  return false;
+}
+
+int updateMany(Node head, int data, int oldData) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  int amountUpdated = 0;
+
+  while (current != NULL) {
+    if (current->data == oldData) {
+      current->data = data;
+      amountUpdated++;
+    }
+
+    current = current->next;
+  }
+
+  return amountUpdated;
 }
