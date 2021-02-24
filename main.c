@@ -15,19 +15,19 @@ void insertLast(Node *head, int data);
 void insertAt(Node *head, int data);
 void printList(Node);
 int length(Node head);
-void removeFirst(Node *head);
-void removeLast(Node head);
-void removeAt(Node *head, int index);
 Node getFirst(Node head);
 Node getLast(Node head);
 Node getAt(Node head, int index);
-void findIndex(Node head, int data);
-Node find(Node head, int data);
-bool contains(Node head, int data);
 bool isEmpty();
+bool contains(Node head, int data);
+void removeFirst(Node *head);
+void removeLast(Node *head);
+void removeAt(Node *head, int index);
+int findIndex(Node head, int data);
+
+Node find(Node head, int data);
 int count(Node head, int data);
 void forEach(Node head, int (*function)(int));
-
 Node findMidpoint(Node head);
 Node stepBackFromTail(Node head);
 
@@ -100,6 +100,9 @@ void insertAt(Node *head, int data, int index) {
   Node newNodeToInsert;
   newNodeToInsert = malloc(sizeof(struct Node));
   newNodeToInsert->data = data;
+  newNodeToInsert->next = nodeAtPreviousIndex->next;
+
+  nodeAtPreviousIndex->next = newNodeToInsert;
 
   return;
 }
@@ -124,6 +127,10 @@ Node getLast(Node head) {
   }
 
   while (current != NULL) {
+    if (current->next == NULL) {
+      return current;
+    }
+
     current = current->next;
   }
 
@@ -151,7 +158,7 @@ Node getAt(Node head, int index) {
 
   while (current != NULL) {
     if (counter == index) {
-      break;
+      return current;
     }
 
     current = current->next;
@@ -161,16 +168,50 @@ Node getAt(Node head, int index) {
   return current;
 }
 
-void printList(Node head) {
-  Node currentNode = head;
+void removeFirst(Node *head) {
+  Node current = *head;
 
-  while (currentNode->next != NULL) {
-    printf("%d ->", currentNode->data);
-    currentNode = currentNode->next;
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
   }
 
-  printf("NULL");
+  if (current->next == NULL) {
+    *head = NULL;
+  }
+
+  Node newHead = current->next;
+  *head = newHead;
+
+  return;
 }
+
+void removeLast(Node *head) {
+  Node current = *head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  if (current->next == NULL) {
+    *head = NULL;
+  }
+
+  Node next = current->next;
+
+  while (next != NULL) {
+    if (next->next == NULL) {
+      current->next = NULL;
+    }
+
+    current = current->next;
+    next = next->next;
+  }
+}
+
+void removeAt(Node *head, int index);
+int findIndex(Node head, int data);
 
 int length(Node head) {
   Node currentNode = head;
@@ -197,4 +238,38 @@ bool isEmpty(Node head) {
   }
 
   return false;
+}
+
+bool contains(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    if (current->data == data) {
+      break;
+    }
+
+    current = current->next;
+  }
+
+  if (current->data == data) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+void printList(Node head) {
+  Node currentNode = head;
+
+  while (currentNode->next != NULL) {
+    printf("%d ->", currentNode->data);
+    currentNode = currentNode->next;
+  }
+
+  printf("NULL");
 }
