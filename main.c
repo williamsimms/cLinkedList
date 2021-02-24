@@ -24,9 +24,9 @@ void removeFirst(Node *head);
 void removeLast(Node *head);
 void removeAt(Node *head, int index);
 int findIndex(Node head, int data);
-
 Node find(Node head, int data);
 int count(Node head, int data);
+
 void forEach(Node head, int (*function)(int));
 Node findMidpoint(Node head);
 Node stepBackFromTail(Node head);
@@ -210,8 +210,80 @@ void removeLast(Node *head) {
   }
 }
 
-void removeAt(Node *head, int index);
-int findIndex(Node head, int data);
+void removeAt(Node *head, int index) {
+  Node current = *head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  Node nodeAtIndex = getAt(*head, index - 1);
+
+  nodeAtIndex->next = nodeAtIndex->next->next;
+}
+
+int findIndex(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  int counter = 0;
+
+  while (current != NULL) {
+    if (current->data == data) {
+      return counter;
+    }
+
+    current = current->next;
+    counter++;
+  }
+
+  return -1;
+}
+
+Node find(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  while (current != NULL) {
+    if (current->data == data) {
+      return current;
+    }
+
+    current = current->next;
+  }
+
+  return NULL;
+}
+
+int count(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  int counter = 0;
+
+  while (current != NULL) {
+    if (current->data == data) {
+      counter++;
+    }
+
+    current = current->next;
+  }
+
+  return counter;
+}
 
 int length(Node head) {
   Node currentNode = head;
