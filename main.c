@@ -26,10 +26,10 @@ void removeAt(Node *head, int index);
 int findIndex(Node head, int data);
 Node find(Node head, int data);
 int count(Node head, int data);
-
 void forEach(Node head, int (*function)(int));
 Node findMidpoint(Node head);
-Node stepBackFromTail(Node head);
+Node stepBackFromTail(Node head, int amountToStepBack);
+bool isCircular(Node head);
 
 int main(void) {
   Node head = NULL;
@@ -345,3 +345,67 @@ void printList(Node head) {
 
   printf("NULL");
 }
+
+Node findMidpoint(Node head) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  Node next = current->next;
+
+  while (current != NULL) {
+    current = current->next;
+  }
+}
+
+Node stepBackFromTail(Node head, int amountToStepBack) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  int counter = 0;
+
+  Node next = current;
+
+  while (counter < amountToStepBack && next != NULL) {
+    next = next->next;
+    counter++;
+  }
+
+  while (next != NULL) {
+    current = current->next;
+    next = next->next;
+  }
+
+  return current;
+}
+
+bool isCircular(Node head) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  Node next = current->next;
+
+  while (current != NULL) {
+    if (current == next) {
+      return true;
+    }
+
+    current = current->next;
+    next = next->next;
+  }
+
+  return false;
+}
+
+void forEach(Node head, int (*function)(int));
