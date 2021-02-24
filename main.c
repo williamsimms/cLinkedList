@@ -35,9 +35,11 @@ void sort(Node head);
 bool updateIndex(Node head, int data, int index);
 bool updateOne(Node head, int data, int oldData);
 int updateMany(Node head, int data, int oldData);
-void clear(Node head);
 bool updateFirst(Node head, int data);
 bool updateLast(Node head, int data);
+void clear(Node *head);
+
+int doubleNumber(int a) { return a * 2; }
 
 int main(void) {
   Node head = NULL;
@@ -152,6 +154,36 @@ int main(void) {
   printList(head);
 
   insertAt(&head, 24, 50);
+  printList(head);
+
+  Node midpoint = findMidpoint(head);
+  printf("The Midpoint of the Linked List is -> %d. \n", midpoint->data);
+
+  Node threeFromTail = stepBackFromTail(head, 3);
+  printf("Stepping back three nodes from the tail yields the value %d .\n",
+         threeFromTail->data);
+
+  Node zeroFromTail = stepBackFromTail(head, 0);
+  printf("Stepping back zero nodes from the tail yields the value %d .\n",
+         zeroFromTail->data);
+
+  Node lastNode = getLast(head);
+  Node fifthNode = getAt(head, 4);
+
+  lastNode->next = fifthNode;
+
+  bool isListCircular = isCircular(head);
+
+  printf("%s .\n", isListCircular == 1 ? "The Linked List is Circular"
+                                       : "The Linked List is not circular");
+
+  lastNode->next = NULL;
+  isListCircular = isCircular(head);
+  printf("%s .\n", isListCircular == 1 ? "The Linked List is Circular"
+                                       : "The Linked List is not Circular");
+
+  forEach(head, doubleNumber);
+
   printList(head);
 
   return 0;
@@ -517,7 +549,7 @@ Node findMidpoint(Node head) {
     exit(EXIT_FAILURE);
   }
 
-  while (next != NULL && next->next->next != NULL) {
+  while (next->next != NULL && next->next->next != NULL) {
     current = current->next;
     next = next->next->next;
   }
@@ -559,13 +591,13 @@ bool isCircular(Node head) {
     exit(EXIT_FAILURE);
   }
 
-  while (next != NULL && next->next->next != NULL) {
+  while (next->next != NULL && next->next->next != NULL) {
+    current = current->next;
+    next = next->next->next;
+
     if (current == next) {
       return true;
     }
-
-    current = current->next;
-    next = next->next;
   }
 
   return false;
@@ -721,8 +753,8 @@ bool updateLast(Node head, int data) {
   return true;
 }
 
-void clear(Node head) {
-  Node current = head;
+void clear(Node *head) {
+  Node current = *head;
   Node next = NULL;
 
   if (current == NULL) {
@@ -730,5 +762,13 @@ void clear(Node head) {
     exit(EXIT_FAILURE);
   }
 
-  next = head->next;
+  next = current->next;
+
+  while (next != NULL) {
+    free(current);
+    current = next;
+    next = next->next;
+  }
+
+  *head = NULL;
 }
