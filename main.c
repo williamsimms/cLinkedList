@@ -10,9 +10,9 @@ struct Node {
 
 typedef struct Node *Node;
 
-void insertFirst(Node head, int data);
+void insertFirst(Node *head, int data);
+void insertLast(Node *head, int data);
 void printList(Node);
-void insertLast(Node head, int data);
 void deleteFirst(Node head);
 int length(Node);
 void insertAt(Node head, int data);
@@ -27,21 +27,51 @@ bool isEmpty();
 int main(void) {
   Node head = NULL;
 
+  // insertFirst(&head,10)
+
   return 0;
 }
 
-void insertFirst(Node head, int data) {
-  if (head == NULL) {
+void insertFirst(Node *head, int data) {
+  if (*head == NULL) {
     Node newHeadNode;
+    newHeadNode = malloc(sizeof(struct Node));
     newHeadNode->data = data;
     newHeadNode->next = NULL;
+    *head = newHeadNode;
     return;
   }
 
   Node newHeadNode;
+  newHeadNode = malloc(sizeof(struct Node));
   newHeadNode->data = data;
-  newHeadNode->next = head;
+  newHeadNode->next = *head;
+  *head = newHeadNode;
   return;
+}
+
+void insertLast(Node *head, int data) {
+  Node current = *head;
+
+  if (current == NULL) {
+    Node newHeadNode;
+    newHeadNode = malloc(sizeof(struct Node));
+    newHeadNode->data = data;
+    newHeadNode->next = NULL;
+    *head = newHeadNode;
+    return;
+  }
+
+  while (current->next != NULL) {
+    current = current->next;
+  }
+
+  Node newLastNode;
+  newLastNode = malloc(sizeof(struct Node));
+  newLastNode->data = data;
+  newLastNode->next = NULL;
+
+  current->next = newLastNode;
 }
 
 void printList(Node head) {
