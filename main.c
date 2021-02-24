@@ -14,16 +14,22 @@ void insertFirst(Node *head, int data);
 void insertLast(Node *head, int data);
 void insertAt(Node *head, int data);
 void printList(Node);
-void deleteFirst(Node head);
-int length(Node);
-bool deleteData(Node head, int data);
-void deleteLast(Node head);
+int length(Node head);
+void removeFirst(Node *head);
+void removeLast(Node head);
+void removeAt(Node *head, int index);
 Node getFirst(Node head);
 Node getLast(Node head);
 Node getAt(Node head, int index);
 void findIndex(Node head, int data);
+Node find(Node head, int data);
 bool contains(Node head, int data);
 bool isEmpty();
+int count(Node head, int data);
+void forEach(Node head, int (*function)(int));
+
+Node findMidpoint(Node head);
+Node stepBackFromTail(Node head);
 
 int main(void) {
   Node head = NULL;
@@ -89,9 +95,13 @@ void insertAt(Node *head, int data, int index) {
     return;
   }
 
-  int counter = 0;
+  Node nodeAtPreviousIndex = getAt(*head, index);
 
-  //
+  Node newNodeToInsert;
+  newNodeToInsert = malloc(sizeof(struct Node));
+  newNodeToInsert->data = data;
+
+  return;
 }
 
 Node getFirst(Node head) {
@@ -129,7 +139,7 @@ Node getAt(Node head, int index) {
   }
 
   if (index < 0) {
-    puts("Index can not be less than 0");
+    puts("Index can not be less than 0.");
     exit(EXIT_FAILURE);
   }
 
@@ -178,3 +188,13 @@ int length(Node head) {
 
   return counter;
 };
+
+bool isEmpty(Node head) {
+  Node currentNode = head;
+
+  if (currentNode == NULL) {
+    return true;
+  }
+
+  return false;
+}
