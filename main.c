@@ -35,6 +35,9 @@ void sort(Node head);
 bool updateIndex(Node head, int data, int index);
 bool updateOne(Node head, int data, int oldData);
 int updateMany(Node head, int data, int oldData);
+void clear(Node head);
+bool updateFirst(Node head, int data);
+bool updateLast(Node head, int data);
 
 int main(void) {
   Node head = NULL;
@@ -156,7 +159,7 @@ int main(void) {
 
 void insertFirst(Node *head, int data) {
   if (*head == NULL) {
-    Node newHeadNode;
+    Node newHeadNode = NULL;
     newHeadNode = (Node)malloc(sizeof(struct Node));
 
     if (newHeadNode == NULL) {
@@ -169,7 +172,7 @@ void insertFirst(Node *head, int data) {
     return;
   }
 
-  Node newHeadNode;
+  Node newHeadNode = NULL;
   newHeadNode = (Node)malloc(sizeof(struct Node));
 
   if (newHeadNode == NULL) {
@@ -186,7 +189,7 @@ void insertLast(Node *head, int data) {
   Node current = *head;
 
   if (current == NULL) {
-    Node newHeadNode;
+    Node newHeadNode = NULL;
     newHeadNode = malloc(sizeof(struct Node));
 
     if (newHeadNode == NULL) {
@@ -203,7 +206,7 @@ void insertLast(Node *head, int data) {
     current = current->next;
   }
 
-  Node newLastNode;
+  Node newLastNode = NULL;
   newLastNode = malloc(sizeof(struct Node));
 
   if (newLastNode == NULL) {
@@ -220,7 +223,7 @@ void insertAt(Node *head, int data, int index) {
   Node current = *head;
 
   if (current == NULL) {
-    Node newHeadNode;
+    Node newHeadNode = NULL;
     newHeadNode = (Node)malloc(sizeof(struct Node));
 
     if (newHeadNode == NULL) {
@@ -245,7 +248,7 @@ void insertAt(Node *head, int data, int index) {
     return;
   }
 
-  Node newNodeToInsert;
+  Node newNodeToInsert = NULL;
   newNodeToInsert = (Node)malloc(sizeof(struct Node));
 
   if (newNodeToInsert == NULL) {
@@ -691,4 +694,41 @@ int updateMany(Node head, int data, int oldData) {
   }
 
   return amountUpdated;
+}
+
+bool updateFirst(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  head->data = data;
+  return true;
+}
+
+bool updateLast(Node head, int data) {
+  Node current = head;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  Node last = getLast(head);
+  last->data = data;
+  return true;
+}
+
+void clear(Node head) {
+  Node current = head;
+  Node next = NULL;
+
+  if (current == NULL) {
+    puts("List is Empty.");
+    exit(EXIT_FAILURE);
+  }
+
+  next = head->next;
 }
