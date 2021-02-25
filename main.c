@@ -174,13 +174,13 @@ int main(void) {
 
   bool isListCircular = isCircular(head);
 
-  printf("%s .\n", isListCircular == 1 ? "The Linked List is Circular"
-                                       : "The Linked List is not circular");
+  printf("%s.\n", isListCircular == 1 ? "The Linked List is Circular"
+                                      : "The Linked List is not circular");
 
   lastNode->next = NULL;
   isListCircular = isCircular(head);
-  printf("%s .\n", isListCircular == 1 ? "The Linked List is Circular"
-                                       : "The Linked List is not Circular");
+  printf("%s.\n", isListCircular == 1 ? "The Linked List is Circular"
+                                      : "The Linked List is not Circular");
 
   forEach(head, doubleNumber);
 
@@ -194,7 +194,7 @@ int main(void) {
 
   int itemsUpdated = updateMany(head, 45, 44);
   printList(head);
-  printf("Items updated -> %d .\n", itemsUpdated);
+  printf("Items updated -> %d.\n", itemsUpdated);
 
   updateFirst(head, 1);
   updateLast(head, 12);
@@ -403,6 +403,7 @@ void removeFirst(Node *head) {
 
   Node newHead = current->next;
   *head = newHead;
+  current->next = NULL;
   free(current);
 
   return;
