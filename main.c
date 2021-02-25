@@ -446,6 +446,7 @@ void removeAt(Node *head, int index) {
   Node nodeBeingRemoved = nodePreviousToIndex->next;
   nodePreviousToIndex->next = nodePreviousToIndex->next->next;
 
+  nodeBeingRemoved->next = NULL;
   free(nodeBeingRemoved);
 }
 
@@ -798,6 +799,7 @@ void clear(Node *head) {
   next = current->next;
 
   while (next != NULL) {
+    current->next = NULL;
     free(current);
     current = next;
     next = next->next;
